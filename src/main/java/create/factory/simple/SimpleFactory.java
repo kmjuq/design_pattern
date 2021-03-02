@@ -1,15 +1,19 @@
 package create.factory.simple;
 
+import create.factory.pojo.ProductA;
+import create.factory.pojo.ProductA1;
+import create.factory.pojo.ProductA2;
+
 public class SimpleFactory {
 
-    public Product createProduct(String words) {
+    public ProductA createProduct(String words) {
         switch (words) {
-            case "A":
-                return new ProductA();
-            case "B":
-                return new ProductB();
+            case "1":
+                return new ProductA1();
+            case "2":
+                return new ProductA2();
             default:
-                return new Product();
+                return new ProductA();
         }
     }
 
