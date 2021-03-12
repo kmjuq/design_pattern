@@ -2,39 +2,47 @@ package behave.chain.template;
 
 import behave.chain.AskLeaveRequest;
 
-import java.util.function.Function;
+/**
+ * <p>
+ *
+ * </p>
+ *
+ * @author kemengjian@126.com 2021/3/12 17:23
+ */
+public abstract class AskLeaveHandlerTemplate {
 
-public class AskLeaveHandlerTemplate {
-
-    private final Function<AskLeaveRequest,Boolean> handler;
-
+    private AskLeaveHandlerTemplate first;
     private AskLeaveHandlerTemplate next;
 
-    public AskLeaveHandlerTemplate(Function<AskLeaveRequest, Boolean> handler) {
-        this.handler = handler;
+    public AskLeaveHandlerTemplate(){
+        this.first = this;
+    }
+
+    public AskLeaveHandlerTemplate first(){
+        return this.first;
     }
 
     public AskLeaveHandlerTemplate next(){
         return this.next;
     }
 
-    public AskLeaveHandlerTemplate next(AskLeaveHandlerTemplate next){
-        this.next = next;
+    public AskLeaveHandlerTemplate next(AskLeaveHandlerTemplate handler){
+        this.next = handler;
+        this.next.first = this.first;
         return this.next;
     }
 
-    public AskLeaveHandlerTemplate first(){
-        return this;
-    }
+    abstract boolean business(AskLeaveRequest request);
 
-    public boolean handler(AskLeaveRequest request) {
-        if(this.handler.apply(request)){
+    public final boolean handler(AskLeaveRequest request){
+        if(business(request)){
             return true;
         }
-        if (this.next() != null) {
-            return this.next().handler(request);
-        } else {
+        if(this.next != null){
+            return this.next.handler(request);
+        }else{
             return false;
         }
     }
+
 }
