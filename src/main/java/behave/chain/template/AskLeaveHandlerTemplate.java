@@ -38,8 +38,8 @@ public abstract class AskLeaveHandlerTemplate {
         if(business(request)){
             return true;
         }
-        if(this.next != null){
-            return this.next.handler(request);
+        if(this.next() != null){
+            return this.next().handler(request);
         }else{
             return false;
         }
